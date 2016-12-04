@@ -1,0 +1,78 @@
+
+export ZFSBOOT_DISKS=ada0
+export ZFSBOOT_DATASETS="
+    /ROOT                mountpoint=none
+    /ROOT/default        mountpoint=/
+
+    /tmp        mountpoint=/tmp,compression=lz4,exec=on,setuid=off
+    /usr        mountpoint=/usr
+    /usr/src    compression=lz4,exec=off,setuid=off
+    /usr/obj
+
+    /usr/ports  mountpoint=/usr/ports,compression=lz4,setuid=off
+    /usr/ports/distfiles  compression=off,exec=off,setuid=off
+    /usr/ports/packages   compression=off,exec=off,setuid=off
+
+    /usr/local  mountpoint=/usr/local
+
+    /home       mountpoint=/home
+
+    /var	mountpoint=/var
+    /var/crash  compression=lz4,exec=off,setuid=off
+    /var/log    compression=lz4,exec=off,setuid=off
+    /var/mail   compression=lz4,atime=on
+    /var/tmp    compression=lz4,exec=on,setuid=off
+" 
+
+export nonInteractive="YES"
+DISTRIBUTIONS="base.txz kernel.txz"
+
+#!/bin/sh
+
+echo 'ifconfig_em0="inet 192.168.1.20 netmask 255.255.255.0"' >> /etc/rc.conf
+echo 'defaultrouter="192.168.1.1"' >> /etc/rc.conf
+
+echo "" >> /etc/rc.conf
+
+echo 'keymap="us"' >> /etc/rc.conf
+
+echo "" >> /etc/rc.conf
+
+echo 'saver="daemon"' >> /etc/rc.conf
+
+echo "" >> /etc/rc.conf
+
+echo 'sshd_enable="YES"' >> /etc/rc.conf
+
+echo "" >> /etc/rc.conf
+
+echo 'clear_tmp_enable="YES"' >> /etc/rc.conf
+
+echo "" >> /etc/rc.conf
+
+echo "# Set dumpdev to "AUTO" to enable crash dumps, "NO" to disable" >> /etc/rc.conf
+echo 'dumpdev="AUTO"' >> /etc/rc.conf
+
+echo "" >> /etc/rc.conf
+echo "### ntpdate" >> /etc/rc.conf
+echo 'ntpdate_enable="YES"' >> /etc/rc.conf
+echo 'ntpdate_program="/usr/sbin/ntpdate"' >> /etc/rc.conf
+echo 'ntpdate_flags="-b"' >> /etc/rc.conf
+echo 'ntpdate_hosts="ntp1.jst.mfeed.ad.jp"' >> /etc/rc.conf
+
+echo "" >> /etc/rc.conf
+
+echo "### syslogd" >> /etc/rc.conf
+echo 'syslogd_enable="YES"' >> /etc/rc.conf
+
+echo "" >> /etc/rc.conf
+echo "### Settings for /etc/rc.sendmail and /etc/rc.d/sendmail:" >> /etc/rc.conf
+echo 'sendmail_enable="NO"' >> /etc/rc.conf
+echo 'sendmail_submit_enable="NO"' >> /etc/rc.conf
+echo 'sendmail_outbound_enable="NO"' >> /etc/rc.conf
+echo 'sendmail_msp_queue_enable="NO"' >> /etc/rc.conf
+
+echo "" >> /etc/rc.conf
+
+echo "### zfs" >> /etc/rc.conf
+echo 'zfs_enable="YES"' >> /etc/rc.conf
