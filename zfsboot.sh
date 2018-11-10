@@ -1,36 +1,37 @@
 
+export ZFSBOOT_POOL_CREATE_OPTIONS="-O atime=off"
 export ZFSBOOT_DISKS=ada0
 export ZFSBOOT_DATASETS="
-    /ROOT                mountpoint=none
-    /ROOT/default        mountpoint=/
+    /ROOT                mountpoint=none,compression=off
+    /ROOT/default        mountpoint=/,canmount=noauto,compression=off
 
-    /tmp        mountpoint=/tmp,compression=lz4,exec=on,setuid=off
-    /usr        mountpoint=/usr
-    /usr/src    compression=lz4,exec=off,setuid=off
-    /usr/obj
+    /tmp        mountpoint=/tmp,compression=off,exec=on,setuid=off
+    /usr        mountpoint=/usr,canmount=off,compression=off
+    /usr/src    compression=gzip-9,exec=off,setuid=off
+    /usr/obj    compression=off
 
-    /usr/ports  mountpoint=/usr/ports,compression=lz4,setuid=off
+    /usr/ports  mountpoint=/usr/ports,compression=gzip-9,setuid=off
     /usr/ports/distfiles  compression=off,exec=off,setuid=off
     /usr/ports/packages   compression=off,exec=off,setuid=off
 
-    /usr/local  mountpoint=/usr/local
+    /usr/local  mountpoint=/usr/local,compression=off
 
-    /home       mountpoint=/home
+    /home       mountpoint=/home,compression=off
 
-    /var	mountpoint=/var
-    /var/crash  compression=lz4,exec=off,setuid=off
-    /var/log    compression=lz4,exec=off,setuid=off
-    /var/mail   compression=lz4,atime=on
-    /var/tmp    compression=lz4,exec=on,setuid=off
+    /var	mountpoint=/var,canmount=off,compression=off
+    /var/audit  compression=gzip-9,exec=off,setuid=off
+    /var/crash  compression=gzip-9,exec=off,setuid=off
+    /var/log    compression=gzip-9,exec=off,setuid=off
+    /var/mail   compression=gzip-9,atime=on
+    /var/tmp    compression=gzip-9,exec=on,setuid=off
 " 
 
 export nonInteractive="YES"
-DISTRIBUTIONS="base.txz kernel.txz"
+DISTRIBUTIONS="base.txz lib32.txz kernel.txz"
 
 #!/bin/sh
 
-echo 'ifconfig_em0="inet 192.168.1.20 netmask 255.255.255.0"' >> /etc/rc.conf
-echo 'defaultrouter="192.168.1.1"' >> /etc/rc.conf
+echo 'ifconfig_em0="DHCP"' > /etc/rc.conf
 
 echo "" >> /etc/rc.conf
 
